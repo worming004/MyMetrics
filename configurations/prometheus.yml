@@ -1,0 +1,22 @@
+global:
+  scrape_interval:     15s
+  evaluation_interval: 5s
+
+rule_files:
+  - "./rules.yml"
+
+scrape_configs:
+  - job_name: prometheus
+    static_configs:
+      - targets: ['localhost:9090', 'localhost:5227']
+
+alerting:
+  alertmanagers:
+    - timeout: "10s"
+      api_version: v2
+      path_prefix: /
+      scheme: http
+      follow_redirects: true
+      static_configs:
+        - targets:
+            - "localhost:9093"

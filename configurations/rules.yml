@@ -1,0 +1,20 @@
+groups:
+  - name: example
+    limit: 15
+    rules:
+    - record: job:http_inprogress_requests:sum
+      expr: sum by (job) (http_inprogress_requests)
+    - alert: HighRequestLatency
+      expr: ob:request_latency_seconds:mean5m{job="myjob"} > 0.5
+      for: 10m
+      labels:
+        severity: page
+      annotations:
+        summary: High request latency
+    - alert: MyCounterError
+      expr: rate(my_counter{status="Error"}[1m]) > 0.001
+      for: 1m
+      labels:
+        severity: page
+      annotations:
+        summary: Error encountered
